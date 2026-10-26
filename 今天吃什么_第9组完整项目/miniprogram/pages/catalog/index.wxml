@@ -1,0 +1,15 @@
+<view class="page">
+  <view class="eyebrow">EXPLORE CAMPUS CANTEENS</view><view class="title">熟悉的食堂 新的发现</view>
+  <view class="subtitle">{{canteenOptions.length}}座餐厅 · {{windowCount}}个窗口 · {{dishCount}}道在售菜品</view>
+  <view wx:if="{{demo}}" class="notice">餐厅名称按需求配置；窗口、菜品、价格为示例，实际位置、楼层和营业时间待核实。</view>
+  <block wx:if="{{!selectedWindow}}">
+    <view class="chips"><view class="chip {{!selectedCanteen?'on':''}}" data-id="" bindtap="selectCanteen">全部餐厅</view><view wx:for="{{canteenOptions}}" wx:key="id" class="chip {{selectedCanteen===item.id?'on':''}}" data-id="{{item.id}}" bindtap="selectCanteen">{{item.name}}</view></view>
+    <view class="panel" wx:for="{{canteens}}" wx:key="id">
+      <view class="row"><view><view class="section-title">{{item.emoji}} {{item.name}}</view><view class="muted">{{item.location}} · {{item.hours}}<view></view>{{item.note}}</view></view><text class="status l{{item.crowd.level}}">{{item.crowd.label}}</text></view>
+      <view class="record" wx:for="{{item.windows}}" wx:for-item="w" wx:key="id"><view class="row"><view><view>{{w.name}}</view><view class="muted">{{w.floor}} · {{w.hours}}<view></view>{{w.crowd.label}}</view></view><view class="wrap"><button class="small" data-id="{{w.id}}" bindtap="open">查看菜品</button><button class="small" data-id="{{w.id}}" bindtap="favorite">{{w.favorite?'♥':'♡'}}</button></view></view></view>
+      <view wx:if="{{!item.windows.length}}" class="muted">窗口信息正在整理，请稍后再来。</view>
+    </view>
+  </block>
+  <block wx:else><view class="panel"><view class="section-title">{{selectedWindow.name}}</view><view class="muted">{{selectedWindow.canteenName}} · {{selectedWindow.floor}} · {{selectedWindow.hours}}</view><view class="notice">{{selectedWindow.crowd.label}} · {{selectedWindow.crowd.freshness}}<view></view>{{selectedWindow.crowd.sampleHint}} · {{selectedWindow.crowd.eta}}</view><button class="small" data-id="{{selectedWindow.id}}" bindtap="favorite">{{selectedWindow.favorite?'♥ 已收藏窗口':'♡ 收藏窗口'}}</button><button class="small mt" bindtap="close">返回食堂列表</button></view><dish-list items="{{items}}" bind:changed="update"/><view wx:if="{{!items.length}}" class="notice">此窗口暂无在售菜品，请选择其他窗口。</view></block>
+  <view class="owner">模块负责人 · 王俊杰</view>
+</view>

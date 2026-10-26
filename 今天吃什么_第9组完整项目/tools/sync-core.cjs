@@ -1,0 +1,1 @@
+const fs=require('node:fs'),path=require('node:path');const root=path.resolve(__dirname,'..');fs.copyFileSync(path.join(root,'miniprogram/shared/core.js'),path.join(root,'cloudfunctions/campusApi/core.js'));console.log('Shared core synchronized.');

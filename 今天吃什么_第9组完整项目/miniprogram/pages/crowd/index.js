@@ -1,0 +1,8 @@
+// 范星宇：近期众包实况、冷却与每日额度，网络刷新和本地倒计时分开。
+const S=require('../../services/store'),C=S.C;
+Page({plan(){wx.navigateTo({url:'/pages/plan/index'});},data:{canteens:[],updated:'',reporting:false},
+  onShow(){clearInterval(this.timer);this.refresh();let ticks=0;this.timer=setInterval(()=>{this.update();if(++ticks%30===0)this.refresh();},1000);},onHide(){clearInterval(this.timer);},onUnload(){clearInterval(this.timer);},
+  update(){const s=S.current(),uid=S.ctx().userId,allow=(type,id)=>{const r=C.crowdAllowance(s,uid,type,id);return {...r,hint:!uid?'登录后可分享':!r.remaining?'今日上报已达上限':r.seconds?'同地点冷却 '+r.seconds+' 秒':'今日还可上报 '+r.remaining+' 次'};};this.setData({coverage:s.windows.filter(w=>C.crowd(s,'window',w.id).count>0).length,totalWindows:s.windows.length,activeReports:s.crowds.filter(r=>r.createdAt<=Date.now()&&Date.now()-r.createdAt<C.TTL).length,canteens:s.canteens.map(c=>({...c,crowd:C.crowd(s,'canteen',c.id),allowance:allow('canteen',c.id),windows:s.windows.filter(w=>w.canteenId===c.id).map(w=>({...w,crowd:C.crowd(s,'window',w.id),allowance:allow('window',w.id)}))}))});},
+  async refresh(){if(this.refreshing)return;this.refreshing=true;try{await S.refresh();this.setData({updated:new Date().toLocaleTimeString()});this.update();}catch(e){S.error(e);}finally{this.refreshing=false;}},
+  async report(e){if(this.data.reporting||!S.requireLogin())return;this.setData({reporting:true});try{const d=e.currentTarget.dataset,before=C.points(S.current(),S.ctx().userId);await S.action('crowd',{type:d.type,targetId:d.id,level:Number(d.level)});const gain=C.points(S.current(),S.ctx().userId)-before;wx.showToast({title:gain?'上报成功 +'+gain+'分':'上报成功 今日奖励已满',icon:'none'});this.update();}catch(e){S.error(e);}finally{this.setData({reporting:false});}}
+});

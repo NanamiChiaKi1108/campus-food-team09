@@ -1,0 +1,2 @@
+const S=require('../../services/store');
+Component({properties:{items:{type:Array,value:[]}},methods:{open(e){wx.navigateTo({url:'/pages/detail/index?id='+e.currentTarget.dataset.id});},async favorite(e){if(!S.requireLogin())return;try{await S.action('favorite',{type:'dish',targetId:e.currentTarget.dataset.id,enabled:!S.favorite('dish',e.currentTarget.dataset.id)});this.triggerEvent('changed');wx.showToast({title:'收藏已更新',icon:'success'});}catch(err){S.error(err);}}}});

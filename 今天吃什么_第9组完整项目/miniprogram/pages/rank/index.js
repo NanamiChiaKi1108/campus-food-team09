@@ -1,0 +1,3 @@
+// 负责人：杨铭宇。三类榜单及每日投票。
+const S=require('../../services/store');
+Page({data:{tab:'dishes',tabs:[{id:'dishes',name:'人气菜品'},{id:'windows',name:'好评窗口'},{id:'crowd',name:'拥挤度榜'}],items:[]},async onShow(){try{await S.refresh();this.update();}catch(e){S.error(e);}},update(){const s=S.current(),uid=S.ctx().userId,v=s.votes.find(v=>(v.mine||v.userId===uid)&&v.day===S.C.dayKey());this.setData({votedId:v?v.dishId:'',items:S.C.ranked(s,this.data.tab)});},tab(e){this.setData({tab:e.currentTarget.dataset.id});this.update();},async vote(e){if(this.voting||!S.requireLogin())return;this.voting=true;try{await S.action('vote',{dishId:e.currentTarget.dataset.id});this.update();wx.showToast({title:'投票成功'});}catch(e){S.error(e);}finally{this.voting=false;}}});

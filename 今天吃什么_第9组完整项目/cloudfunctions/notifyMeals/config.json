@@ -1,0 +1,1 @@
+{"permissions":{"openapi":["subscribeMessage.send"]},"triggers":[{"name":"mealReminder","type":"timer","config":"0 * * * * * *"}],"timeout":60}

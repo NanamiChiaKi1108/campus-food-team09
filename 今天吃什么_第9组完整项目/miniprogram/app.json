@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/catalog/index",
+    "pages/crowd/index",
+    "pages/rank/index",
+    "pages/profile/index",
+    "pages/detail/index",
+    "pages/admin/index",
+    "pages/plan/index",
+    "pages/compare/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "今天吃什么",
+    "navigationBarBackgroundColor": "#f7f6f2",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f6f2"
+  },
+  "tabBar": {
+    "color": "#9d8e77",
+    "selectedColor": "#e45d3b",
+    "backgroundColor": "#fffdf8",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "今天吃啥"
+      },
+      {
+        "pagePath": "pages/catalog/index",
+        "text": "逛食堂"
+      },
+      {
+        "pagePath": "pages/crowd/index",
+        "text": "排队实况"
+      },
+      {
+        "pagePath": "pages/rank/index",
+        "text": "好味榜"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}
